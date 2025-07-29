@@ -255,8 +255,10 @@ func (s *Server) ServeHTTPNext(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		character := web.GetRandomCharacter()
+
 		templ.Handler(
-			web.Base(localizer.T("you_are_not_a_bot"), web.StaticHappy(localizer), s.policy.Impressum, localizer),
+			web.Base(localizer.T("you_are_not_a_bot"), web.StaticHappy(localizer, character), s.policy.Impressum, localizer),
 		).ServeHTTP(w, r)
 	} else {
 		requestsProxied.WithLabelValues(r.Host).Inc()

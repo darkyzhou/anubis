@@ -214,8 +214,8 @@ thresholds:
     challenge:
       # https://anubis.techaro.lol/docs/admin/configuration/challenges/proof-of-work
       algorithm: fast
-      difficulty: 2 # two leading zeros, very fast for most clients
-      report_as: 2
+      difficulty: 4 # two leading zeros, very fast for most clients
+      report_as: 4
   # For clients that are browser like and have gained many points from custom rules
   - name: extreme-suspicion
     expression: weight >= 20
@@ -223,5 +223,5 @@ thresholds:
     challenge:
       # https://anubis.techaro.lol/docs/admin/configuration/challenges/proof-of-work
       algorithm: fast
-      difficulty: 4
-      report_as: 4
+      difficulty: 6
+      report_as: 6

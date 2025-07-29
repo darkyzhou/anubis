@@ -18,7 +18,7 @@ var CookieName = "techaro.lol-anubis-auth"
 var TestCookieName = "techaro.lol-anubis-cookie-verification"
 
 // CookieDefaultExpirationTime is the amount of time before the cookie/JWT expires.
-const CookieDefaultExpirationTime = 7 * 24 * time.Hour
+const CookieDefaultExpirationTime = 24 * time.Hour
 
 // BasePrefix is a global prefix for all Anubis endpoints. Can be emptied to remove the prefix entirely.
 var BasePrefix = ""

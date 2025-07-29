@@ -13,10 +13,25 @@ const u = (url = "", params = {}) => {
   return result.toString();
 };
 
-const imageURL = (mood, cacheBuster, basePrefix) =>
-  u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${mood}.webp`, {
+const getCharacter = () => {
+  try {
+    return JSON.parse(document.getElementById("anubis_character").textContent);
+  } catch (error) {
+    console.warn('Failed to get server character, falling back to client-side selection');
+  }
+  return Math.random() < 0.5 ? 'a' : 'b';
+};
+
+let cachedCharacter = null;
+
+const imageURL = (mood, cacheBuster, basePrefix) => {
+  if (!cachedCharacter) {
+    cachedCharacter = getCharacter();
+  }
+  return u(`${basePrefix}/.within.website/x/cmd/anubis/static/img/${cachedCharacter}/${mood}.webp`, {
     cacheBuster,
   });
+};
 
 // Detect available languages by loading the manifest
 const getAvailableLanguages = async () => {
@@ -238,15 +253,22 @@ const t = (key) => translations[`js_${key}`] || translations[key] || key;
       container.onclick = onDetailsExpand;
       setTimeout(onDetailsExpand, 30000);
     } else {
-      const redir = window.location.href;
-      window.location.replace(
-        u(`${basePrefix}/.within.website/x/cmd/anubis/api/pass-challenge`, {
-          response: hash,
-          nonce,
-          redir,
-          elapsedTime: t1 - t0,
-        }),
-      );
+      image.src = imageURL("happy", anubisVersion, basePrefix);
+      title.innerHTML = t('you_are_not_a_bot');
+      status.innerHTML = '';
+      progress.style.display = "none";
+      
+      setTimeout(() => {
+        const redir = window.location.href;
+        window.location.replace(
+          u(`${basePrefix}/.within.website/x/cmd/anubis/api/pass-challenge`, {
+            response: hash,
+            nonce,
+            redir,
+            elapsedTime: t1 - t0,
+          }),
+        );
+      }, 800);
     }
   } catch (err) {
     ohNoes({
